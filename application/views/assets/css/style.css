@@ -4,27 +4,13 @@ body {
   padding-bottom: 40px;
 }
 
-.form-signin {
-  max-width: 350px;
-  padding: 15px;
-  margin: 0 auto;
-}
-
-.datatable-content{
-	overflow: auto;
-}
-
 .masthead{
 	height: 150px;
-	margin: auto;
+	margin:0px 15px 0px 15px;
 	background-image: url("../images/topo.jpg");
 	background-position: center;
 	background-repeat: no-repeat;
-}
-
-.masthead .container-head{
-	 padding-top: 80px;
-	 padding-left: 20px;
+	
 }
 
 .masthead-text{
@@ -34,5 +20,11 @@ body {
 	text-shadow: 0.1em 0.1em 0.05em #333;
 }
 
+.materhead-logo{
+	margin-top: 30px;
+	box-shadow: 2px 2px 5px grey;
+}
 
-
+.materhead-logout{
+	margin-top: 120px;
+}

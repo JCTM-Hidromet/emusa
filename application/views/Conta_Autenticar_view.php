@@ -39,15 +39,13 @@
 	<div class="container-fluid">
 	
 		<!-- header-->
-			<div class="row-fluid">
-				<div class="col-md-12">
-					<div class="masthead">
-						<div class="container-head">
-							<h1></h1>
-						</div>
-					</div>
-				</div><!-- /col-md-12 -->
-			</div><!-- /row-fluid -->
+		<div class="row-fluid  masthead">
+			<div class="col-md-4">
+				<img class="materhead-logo img-thumbnail" src="<?php echo base_url('application/views/assets/images/logo_emusa.png') ?>">
+			</div><!-- /col-md-4 -->
+			<div class="col-md-8">
+			</div><!-- /col-md-8 -->
+		</div><!-- /row-fluid masthead -->
 		<!-- /header-->
 		
 		<!-- main content -->
@@ -59,10 +57,15 @@
 						<div class="panel-body">
 						
 							<div class="col-md-4 col-md-offset-4">
+							
+							<?php  if(isset($mensagem)): ?>
+								<div class='<?php echo $classe_mensagem ?> text-center' role='alert'><?php echo $mensagem ?></div>
+							<?php  endif; ?>
+							
+							
 								<div class="panel panel-default">
 	  								<div class="panel-body">
-	    								
-	    								
+	    							   								
 	    								<form action="<?php echo base_url('Conta/autenticar') ?>" method="post" name="login" >
 								
 											<!-- nome cliente -->
