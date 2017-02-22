@@ -1,0 +1,38 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+body {
+  padding-top: 10px;
+  padding-bottom: 40px;
+}
+
+.form-signin {
+  max-width: 350px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.datatable-content{
+	overflow: auto;
+}
+
+.masthead{
+	height: 150px;
+	margin: auto;
+	background-image: url("../images/topo.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.masthead .container-head{
+	 padding-top: 80px;
+	 padding-left: 20px;
+}
+
+.masthead-text{
+	color: threedhighlight;
+ 	font-family: "Droid Sans", sans-serif;
+	font-weight: 400;
+	text-shadow: 0.1em 0.1em 0.05em #333;
+}
+
+
+
