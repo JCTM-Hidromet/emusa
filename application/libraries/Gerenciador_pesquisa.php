@@ -70,20 +70,27 @@ class Gerenciador_pesquisa {
 		$lista_parametros		=	array_keys( $estacao[ 'parametros_estacao' ] );
 		$mnpldr_diretorio		=	opendir( $diretorio_pesquisa );
 		
-		while ( false !== ( $nome_arquivo = readdir( $mnpldr_diretorio ) ) )
+		while ( false !== ( $nome_arquivo = readdir( $mnpldr_diretorio ) ) )//enquanto houver arquivos no diretorio para serem lidos
 		{
-			if ( substr( $nome_arquivo , -4 ) == ".txt" )
+			if ( substr( $nome_arquivo , -4 ) == ".txt" )// verifica se a extensão do arquivo é txt
 			{
 				$caminho_arquivo		=	$diretorio_pesquisa . "\\" . $nome_arquivo;
 				$mnpldr_arquivo			=	fopen( $caminho_arquivo , "r");
 		
-				while ( ( $linha_texto = fgets( $mnpldr_arquivo ) ) !== false )
+				while ( ( $linha_texto = fgets( $mnpldr_arquivo ) ) !== false )// enquanto houver linha para ser lida no arquivo
 				{
-					$padrao_data = "/^(\d){2}\/(\d){2}\/(\d){2}(\s)(\d){2}\:(\d){2}\:(\d){2}/";
+					$padrao_data = "/^(\d){2}\/(\d){2}\/(\d){2}(\s)(\d){2}\:(\d){2}\:(\d){2}/";//determina o padrao data
 						
-					if( preg_match( $padrao_data, $linha_texto , $match ))
+					if( preg_match( $padrao_data, $linha_texto , $match ))//verifica se a linha começa com o padrao data
 					{
-						$valores			=	explode(";", $linha_texto);
+						$valores			=	explode(";", $linha_texto);//cria um vetor com os valores da linha explodidos por ';'
+						
+						if(count($valores)<count($lista_parametros))// se aquantidade de parametros for maior que a quantidade de elementos extraidos da linha 
+						{
+							continue;
+						}
+						
+																		
 						$linha_valores   	=	array();
 						$data_linha 		=	date_create_from_format( "y/m/d H:i:s" , $valores[0] );
 						$data_ini			=	date_create_from_format( "d/m/Y H:i" , $data_inicial );
