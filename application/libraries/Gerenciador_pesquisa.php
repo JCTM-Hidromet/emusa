@@ -9,19 +9,18 @@ class Gerenciador_pesquisa {
 	
 	public function pesquisar_por_periodo( $estacao , $data_inicial , $data_final )
 	{
+		$dados_tabelados					=	array();
+		$dados_tabelados['cabecalho']		=	$this->tabelar_colunas_cabecalho( $estacao );
+		$dados_tabelados['subcabecalho']	= 	$this->tabelar_colunas_subcabecalho( $estacao );
+		$dados_tabelados['corpo']			=	$this->tabelar_colunas_pesquisa_log( $estacao , $data_inicial , $data_final );
 		
-		$linha_colunas_cabecalho	=	$this->tabelar_colunas_cabecalho( $estacao );
-		$linha_colunas_subcabecalho =	$this->tabelar_colunas_subcabecalho( $estacao );
-		$linhas_colunas_dados_log	=	$this->tabelar_colunas_pesquisa_log( $estacao , $data_inicial , $data_final );
-		
-		return $this->tabelar_dados( $linha_colunas_cabecalho , $linha_colunas_subcabecalho , $linhas_colunas_dados_log );
-		 
+		return $dados_tabelados;
+				 
 	}
 	
 	
-	public function tabelar_colunas_cabecalho( $estacao )
+	private function tabelar_colunas_cabecalho( $estacao )
 	{
-		
 		$parametros		=	array_keys( $estacao['parametros_estacao'] );
 		$cabecalho 		=	array();
 		
@@ -40,7 +39,7 @@ class Gerenciador_pesquisa {
 	}
 	
 		
-	public function tabelar_colunas_subcabecalho( $estacao )
+	private function tabelar_colunas_subcabecalho( $estacao )
 	{
 		$parametros				=	array_keys( $estacao['parametros_estacao'] );
 		$unid_parametros		=	array_values( $estacao['parametros_estacao'] );
@@ -63,7 +62,7 @@ class Gerenciador_pesquisa {
 	}
 	
 	
-	public function tabelar_colunas_pesquisa_log( $estacao , $data_inicial , $data_final )
+	private function tabelar_colunas_pesquisa_log( $estacao , $data_inicial , $data_final )
 	{
 		$conjunto_linhas		=	array();
 		$diretorio_pesquisa		=	$estacao['diretorio_logs'];
@@ -89,8 +88,7 @@ class Gerenciador_pesquisa {
 						{
 							continue;
 						}
-						
-																		
+																								
 						$linha_valores   	=	array();
 						$data_linha 		=	date_create_from_format( "y/m/d H:i:s" , $valores[0] );
 						$data_ini			=	date_create_from_format( "d/m/Y H:i" , $data_inicial );
@@ -142,19 +140,6 @@ class Gerenciador_pesquisa {
 	}
 		
 	
-	private function tabelar_dados( $linha_colunas_cabecalho , $linha_colunas_subcabecalho , $linhas_colunas_dados_log ) 
-	{
-		
-		$tabela_dados = array();
-		
-		$tabela_dados['cabecalho']			=	$linha_colunas_cabecalho;
-		$tabela_dados[ 'subcabecalho' ]		=	$linha_colunas_subcabecalho;
-		$tabela_dados[ 'corpo']				=	$linhas_colunas_dados_log;
-		
-		return $tabela_dados;
-	}
-	
-	
 	private function comparar($a , $b)
 	{
 		$data_a = date_create_from_format( "d/m/y H:i:s" , $a[0] );
@@ -165,10 +150,8 @@ class Gerenciador_pesquisa {
 			return 0;
 		}
 		return ( $data_a < $data_b ) ? -1 : 1;
-	
 	}
-	
-			
+				
 }
 		
 		
