@@ -72,19 +72,19 @@ class Gerenciador_pesquisa {
 		$lista_parametros		=	array_keys( $estacao[ 'parametros_estacao' ] );
 		$mnpldr_diretorio		=	opendir( $diretorio_pesquisa );
 		
-		while ( false !== ( $nome_arquivo = readdir( $mnpldr_diretorio ) ) )//enquanto houver arquivos no diretorio para serem lidos
+		while ( false !== ( $nome_arquivo = readdir( $mnpldr_diretorio ) ) )
 		{
-			if ( substr( $nome_arquivo , -4 ) == ".txt" )// verifica se a extensão do arquivo é txt
+			if ( substr( $nome_arquivo , -4 ) == ".txt" )
 			{
 				$caminho_arquivo		=	$diretorio_pesquisa . "\\" . $nome_arquivo;
 				$mnpldr_arquivo			=	fopen( $caminho_arquivo , "r" );
 		
-				while ( ( $linha_texto = fgets( $mnpldr_arquivo ) ) !== false )// enquanto houver linha para ser lida no arquivo
+				while ( ( $linha_texto = fgets( $mnpldr_arquivo ) ) !== false )
 				{
-					$padrao_data		=	"/^(\d){2}\/(\d){2}\/(\d){2}(\s)(\d){2}\:(\d){2}\:(\d){2}/";//determina o padrao data
+					$padrao_data		=	"/^(\d){2}\/(\d){2}\/(\d){2}(\s)(\d){2}\:(\d){2}\:(\d){2}/";
 					$ocorrencia_data	=	array();
 						
-					if( preg_match( $padrao_data, $linha_texto , $ocorrencia_data ))//verifica se a linha começa com o padrao data
+					if( preg_match( $padrao_data, $linha_texto , $ocorrencia_data ))
 					{
 						$data_linha		=	date_create_from_format( "y/m/d H:i:s" , $ocorrencia_data[0] );
 						$data_ini		=	date_create_from_format( "d/m/Y H:i" , $data_inicial );
@@ -96,7 +96,7 @@ class Gerenciador_pesquisa {
 							{
 								$valores	=	preg_split("/\;\s/", $linha_texto);
 								
-								if(count($valores) >= count($lista_parametros))//se a quantidade de valores da linha é menor que a quantidade de parâmetros
+								if(count($valores) >= count($lista_parametros))
 								{
 									$linha_valores	=	array();
 									array_push( $linha_valores , date_format( $data_linha , "d/m/y H:i:s" ) );
