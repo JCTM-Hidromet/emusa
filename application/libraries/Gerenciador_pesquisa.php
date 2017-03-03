@@ -2,13 +2,16 @@
 
 class Gerenciador_pesquisa {
 	
+	private $controle_data;
+	
 	public function __construct(){
-		
+		$this->controle_data	=	array();
 	}
 
 	
 	public function pesquisar_por_periodo( $estacao , $data_inicial , $data_final )
 	{
+		
 		$dados_tabelados					=	array();
 		$dados_tabelados['cabecalho']		=	$this->tabelar_colunas_cabecalho( $estacao );
 		$dados_tabelados['subcabecalho']	= 	$this->tabelar_colunas_subcabecalho( $estacao );
@@ -74,7 +77,7 @@ class Gerenciador_pesquisa {
 			if ( substr( $nome_arquivo , -4 ) == ".txt" )// verifica se a extensão do arquivo é txt
 			{
 				$caminho_arquivo		=	$diretorio_pesquisa . "\\" . $nome_arquivo;
-				$mnpldr_arquivo			=	fopen( $caminho_arquivo , "r");
+				$mnpldr_arquivo			=	fopen( $caminho_arquivo , "r" );
 		
 				while ( ( $linha_texto = fgets( $mnpldr_arquivo ) ) !== false )// enquanto houver linha para ser lida no arquivo
 				{
@@ -99,30 +102,35 @@ class Gerenciador_pesquisa {
 		
 						if( $data_linha >= $data_ini && $data_linha <= $data_fin )
 						{
-							for( $i = 1 ; $i < count( $lista_parametros ) ; $i ++ )
+							if( !($this->data_repetida($data_linha)) ){
+								
+								for( $i = 1 ; $i < count( $lista_parametros ) ; $i ++ )
+								{
+									if( substr( $lista_parametros[ $i ] , 0 , 1 ) != '*' )
+									{
+										$valor = doubleval( $valores[ $i ] );
+										array_push( $linha_valores , $valor );
+									}
+									else
+									{
+										continue;
+									}
+								}
+							}
+							else
 							{
-								if( substr( $lista_parametros[ $i ] , 0 , 1 ) != '*' )
-								{
-									$valor = doubleval( $valores[ $i ] );
-									array_push( $linha_valores , $valor );
-								}
-								else
-								{
-									continue;
-								}
+								continue;
 							}
 						}
 						else
 						{
 							continue;
 						}
-							
 					}
 					else
 					{
 						continue;
 					}
-					
 					array_push( $conjunto_linhas , $linha_valores )	;
 				}
 			}
@@ -131,7 +139,6 @@ class Gerenciador_pesquisa {
 				continue;
 			}
 		}
-		
 		closedir($mnpldr_diretorio);
 
 		usort( $conjunto_linhas , array( $this , "comparar" ));
@@ -151,7 +158,15 @@ class Gerenciador_pesquisa {
 		}
 		return ( $data_a < $data_b ) ? -1 : 1;
 	}
-				
+
+	
+	private function data_repetida($data){
+		if( in_array($data , $this->controle_data) ){
+			return true;
+		}
+		array_push($this->controle_data, $data);
+		return false;
+	}
 }
 		
 		
