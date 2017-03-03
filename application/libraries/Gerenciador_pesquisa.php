@@ -81,42 +81,45 @@ class Gerenciador_pesquisa {
 		
 				while ( ( $linha_texto = fgets( $mnpldr_arquivo ) ) !== false )// enquanto houver linha para ser lida no arquivo
 				{
-					$padrao_data = "/^(\d){2}\/(\d){2}\/(\d){2}(\s)(\d){2}\:(\d){2}\:(\d){2}/";//determina o padrao data
+					$padrao_data		=	"/^(\d){2}\/(\d){2}\/(\d){2}(\s)(\d){2}\:(\d){2}\:(\d){2}/";//determina o padrao data
+					$ocorrencia_data	=	array();
 						
-					if( preg_match( $padrao_data, $linha_texto , $match ))//verifica se a linha começa com o padrao data
+					if( preg_match( $padrao_data, $linha_texto , $ocorrencia_data ))//verifica se a linha começa com o padrao data
 					{
-						$valores			=	explode(";", $linha_texto);//cria um vetor com os valores da linha explodidos por ';'
+						$data_linha		=	date_create_from_format( "y/m/d H:i:s" , $ocorrencia_data[0] );
+						$data_ini		=	date_create_from_format( "d/m/Y H:i" , $data_inicial );
+						$data_fin		=	date_create_from_format( "d/m/Y H:i" , $data_final );
 						
-						if(count($valores)<count($lista_parametros))// se aquantidade de parametros for maior que a quantidade de elementos extraidos da linha 
-						{
-							continue;
-						}
-																								
-						$linha_valores   	=	array();
-						$data_linha 		=	date_create_from_format( "y/m/d H:i:s" , $valores[0] );
-						$data_ini			=	date_create_from_format( "d/m/Y H:i" , $data_inicial );
-						$data_fin			=	date_create_from_format( "d/m/Y H:i" , $data_final );
-						$dt					=	date_format( $data_linha , "d/m/y H:i:s" );
-						
-						array_push( $linha_valores , $dt );
-		
 						if( $data_linha >= $data_ini && $data_linha <= $data_fin )
 						{
-							if( !($this->data_repetida($data_linha)) ){
+							if( !($this->data_repetida($data_linha)) )
+							{
+								$valores	=	preg_split("/\;\s/", $linha_texto);
 								
-								for( $i = 1 ; $i < count( $lista_parametros ) ; $i ++ )
+								if(count($valores) >= count($lista_parametros))//se a quantidade de valores da linha é menor que a quantidade de parâmetros
 								{
-									if( substr( $lista_parametros[ $i ] , 0 , 1 ) != '*' )
+									$linha_valores	=	array();
+									array_push( $linha_valores , date_format( $data_linha , "d/m/y H:i:s" ) );
+									
+									for( $i = 1 ; $i < count( $lista_parametros ) ; $i ++ )
 									{
-										$valor = doubleval( $valores[ $i ] );
-										array_push( $linha_valores , $valor );
-									}
-									else
-									{
-										continue;
+										if( substr( $lista_parametros[ $i ] , 0 , 1 ) != '*' )
+										{
+											$valor = doubleval( $valores[ $i ] );
+											array_push( $linha_valores , $valor );
+										}
+										else
+										{
+											continue;
+										}
 									}
 								}
-							}
+								else
+								{
+									continue;
+								}
+							}	
+												
 							else
 							{
 								continue;
@@ -127,17 +130,10 @@ class Gerenciador_pesquisa {
 							continue;
 						}
 					}
-					else
-					{
-						continue;
-					}
 					array_push( $conjunto_linhas , $linha_valores )	;
 				}
 			}
-			else
-			{
-				continue;
-			}
+			
 		}
 		closedir($mnpldr_diretorio);
 
